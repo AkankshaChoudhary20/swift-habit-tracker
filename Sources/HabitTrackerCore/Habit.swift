@@ -85,6 +85,12 @@ public enum DayIdentifier {
     }
 
     public static func date(from identifier: String, calendar: Calendar = .current) -> Date? {
-        formatter(calendar: calendar).date(from: identifier)
+        let parser = formatter(calendar: calendar)
+        parser.isLenient = false
+        guard let date = parser.date(from: identifier),
+              parser.string(from: date) == identifier else {
+            return nil
+        }
+        return date
     }
 }
